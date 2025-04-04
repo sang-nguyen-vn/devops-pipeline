@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: tmyapp02
+  name: tmyapp02
+  namespace: tmyapp
+spec:
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: tmyapp02
+  template:
+    metadata:
+      labels:
+        app: tmyapp02
+      name: tmyapp02
+    spec:      
+      containers:
+        - image: sangnguyenvn/nginx-v1.0.0
+          name: tmyapp02
+          ports:
+            - containerPort: 80
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tmyapp02
+  namespace: tmyapp
+spec:
+  selector:
+    app: tmyapp02
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP

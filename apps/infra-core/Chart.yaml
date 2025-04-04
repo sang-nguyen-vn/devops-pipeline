@@ -1,0 +1,6 @@
+apiVersion: v2
+name: infra-core
+description: A Helm chart for deploying nginx-ingress and webapp
+version: 0.1.0
+appVersion: "1.0"
+

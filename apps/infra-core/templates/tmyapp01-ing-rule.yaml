@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tmyapp01-ing
+  namespace: tmyapp
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: tmyapp01.sangnguyen.win
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tmyapp01
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - tmyapp01.sangnguyen.win
+      secretName: tmyapp01-tls  # Chỉ định secret chứa chứng chỉ từ cert-manager

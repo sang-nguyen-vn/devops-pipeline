@@ -1,0 +1,17 @@
+nginx-ingress:
+  enabled: true
+  controller:
+    replicaCount: 2
+    service:
+      type: LoadBalancer
+
+webapp:
+  enabled: true
+  namespace: infra-core
+  image:
+    repository: nginx
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 80
+

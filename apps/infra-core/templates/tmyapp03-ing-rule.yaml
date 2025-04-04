@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tmyapp03-ing
+  namespace: tmyapp
+spec:
+  ingressClassName: nginx  # <-- Dùng ingressClassName thay vì annotation
+  rules:
+    - host: tmyapp03.sangnguyen.win
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tmyapp03
+                port:
+                  number: 80
+

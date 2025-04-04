@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: acme-3-ingress
+  namespace: tmyapp
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Không redirect HTTP to HTTPS
+spec:
+  ingressClassName: nginx  # Chỉ định sử dụng nginx-ingress
+  rules:
+  - host: "tmyapp03.sangnguyen.win"  # ACME challenge cho tmyapp01
+    http:
+      paths:
+      - path: /.well-known/acme-challenge/*
+        pathType: Prefix
+        backend:
+          service:
+            name: cert-manager
+            port:
+              number: 8089  # Port mặc định cho ACME solver
+

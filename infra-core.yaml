@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infra-core
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:sang-nguyen-vn/gitops-root.git  # 🔹 URL của repo GitOps
+    targetRevision: HEAD                                    # 🔹 Lấy commit mới nhất
+    path: apps/infra-core                                   # 🔹 Đường dẫn đến Helm Chart
+    helm:
+      valueFiles:                                           # 🔹 Sử dụng giá trị từ values.yaml
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: infra-core                                   # 🔹 Namespace để deploy
+  syncPolicy:
+    automated:
+      prune: true                                          # 🔹 Xóa resource thừa
+      selfHeal: true                                       # 🔹 Tự động sửa lỗi lệch cấu hình
+    syncOptions:
+      - CreateNamespace=true                               # 🔹 Tự động tạo namespace nếu chưa có
+

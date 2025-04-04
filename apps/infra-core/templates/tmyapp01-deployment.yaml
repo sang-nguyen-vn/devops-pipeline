@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tmyapp01
+  namespace: tmyapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tmyapp01
+  template:
+    metadata:
+      labels:
+        app: tmyapp01
+    spec:
+      containers:
+        - name: tmyapp01
+          image: sangnguyenvn/nginx-v1.0.0
+          ports:
+            - containerPort: 80
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+        - name: html
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tmyapp01
+  namespace: tmyapp
+spec:
+  selector:
+    app: tmyapp01
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
